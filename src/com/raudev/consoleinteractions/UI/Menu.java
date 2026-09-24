@@ -66,18 +66,20 @@ public class Menu {
      * Option {@code 0} always represents the special option defined by
      * {@code specialOptionLabel}.</p>
      *
+     * @param selectionText the prompt message displayed to ask the user for selection
+     * @param invalidText the error message displayed when an invalid selection is made
      * @return the number selected by the user
      */
-    public int show() {
+    public int show(String selectionText, String invalidText) {
         printMenu();
 
         int selection;
 
         do {
-            selection = ScannerUtils.captureInt("Select an option");
+            selection = ScannerUtils.captureInt(selectionText);
 
             if (!isValidSelection(selection)) {
-                System.out.println("Invalid option. Please try again.");
+                System.out.println(invalidText);
             }
 
         } while (!isValidSelection(selection));
