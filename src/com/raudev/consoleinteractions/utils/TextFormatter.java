@@ -1,6 +1,7 @@
 package com.raudev.consoleinteractions.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -98,6 +99,60 @@ public final class TextFormatter {
             lines.add(word.substring(start, end));
             start = end;
         }
+    }
+
+    /**
+     * Parses delimited text into a two-dimensional list structure.
+     *
+     * <p>Each line in the input represents a row, while each value separated
+     * by the {@code |} character represents a column.</p>
+     *
+     * <p>Empty values are preserved, including empty values at the end of
+     * rows. Empty lines are also preserved to avoid losing information from
+     * the original text.</p>
+     *
+     * <p>For example, the following text:</p>
+     *
+     * <pre>
+     * name|email|password
+     * carlos|carlos@example.com|12345
+     * </pre>
+     *
+     * <p>is converted into a structure equivalent to:</p>
+     *
+     * <pre>
+     * [
+     *     ["name", "email", "password"],
+     *     ["carlos", "carlos@example.com", "12345"]
+     * ]
+     * </pre>
+     *
+     * @param text text containing rows separated by line breaks and columns
+     *             separated by {@code |}
+     * @return a two-dimensional list containing the parsed rows and columns;
+     *         an empty list if {@code text} is {@code null} or empty
+     */
+    public static List<List<?>> parseTable(String text) {
+
+        List<List<?>> table = new ArrayList<>();
+
+        if (text == null || text.isEmpty()) {
+            return table;
+        }
+
+        String[] rows = text.split("\\R", -1);
+
+        for (String row : rows) {
+
+            String[] columns = row.split("\\|", -1);
+
+            List<String> parsedRow = new ArrayList<>();
+            Collections.addAll(parsedRow, columns);
+
+            table.add(parsedRow);
+        }
+
+        return table;
     }
 }
 
